@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: Student API
+  description: API for managing student records
+  version: 1.0.0
+servers:
+  - url: https://virtserver.swaggerhub.com/nil-704/student/1.0.0
+    description: SwaggerHub Student API
+  - url: http://localhost:3000
+
+paths:
+  /students:
+    get:
+      summary: Get all students
+      operationId: studentsGET
+      responses:
+        "200":
+          description: A list of students
+      x-swagger-router-controller: Default
+
+    post:
+      summary: Add a new student
+      operationId: studentsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+        required: true
+      responses:
+        "201":
+          description: Student created
+      x-swagger-router-controller: Default
+
+  /students/{rollNumber}:
+    get:
+      summary: Get a student by roll number
+      operationId: studentsRollNumberGET
+      parameters:
+        - name: rollNumber
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Student found
+      x-swagger-router-controller: Default
+
+    put:
+      summary: Update a student
+      operationId: studentsRollNumberPUT
+      parameters:
+        - name: rollNumber
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+        required: true
+      responses:
+        "200":
+          description: Student updated
+      x-swagger-router-controller: Default
+
+    delete:
+      summary: Delete a student
+      operationId: studentsRollNumberDELETE
+      parameters:
+        - name: rollNumber
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Student deleted
+      x-swagger-router-controller: Default
+
+    patch:
+      summary: Partially update a student
+      operationId: studentsRollNumberPATCH
+      parameters:
+        - name: rollNumber
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+        required: true
+      responses:
+        "200":
+          description: Student partially updated
+        "404":
+          description: Student not found
+      x-swagger-router-controller: Default
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        name:
+          type: string
+        rollNumber:
+          type: integer
+        grade:
+          type: string
+        programCode:
+          type: string
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    apiKeyAuth:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/auth
+          tokenUrl: https://example.com/token
+          scopes:
+            read: Read student data
+            write: Modify student data
